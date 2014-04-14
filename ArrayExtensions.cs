@@ -12,9 +12,9 @@ namespace Extensions
                 throw new ArgumentNullException("destinationArray");
             }
 
-            if (value.Length >= destinationArray.Length)
+            if (value.Length > destinationArray.Length)
             {
-                throw new ArgumentException("Length of value array must be less than length of destination");
+                throw new ArgumentException("Length of value array must not be more than length of destination");
             }
 
             // set the initial array value
