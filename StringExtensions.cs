@@ -1,44 +1,48 @@
+using System;
+using System.Collections.Generic;
 
-namespace Extensions
+namespace UVAToDataCube
 {
     public static class StringExtensions
     {
-        public static string[] Split(this string input, int numOfParts)
+        public static string[] SplitWithQuotes(this string input, int requiredCount = 0, char quoteChar = '"', char delim = ',', char escape = '\\')
         {
-            const char quoteChar = '"';
-            const char delim = ',';
-            const char escape = '\\';
+            List<string> result = new List<string>(requiredCount);
 
-            string[] result = new string[numOfParts];
-
-            int i = 0, end = 0, start = 0;
+            int end = 0, start = 0;
 
             while (start < input.Length)
             {
-                switch (input[start])
+                char c = input[start];
+
+                if (c == quoteChar)
                 {
-                    case quoteChar:
-                        start++;
-                        while (input[++end] != quoteChar && input[end - 1] != escape) ;
-                        result[i++] = input.Substring(start, end - start);
-                        start = ++end;
-                        break;
-                    case delim:
-                        if (end == input.Length - 1 || input[end + 1] == delim)
-                        {
-                            result[i++] = string.Empty;
-                        }
-                        start = ++end;
-                        break;
-                    default:
-                        while (++end < input.Length && input[end] != delim) ;
-                        result[i++] = input.Substring(start, end - start);
-                        start = end;
-                        break;
+                    while (++end < input.Length && input[end] != quoteChar && input[end - 1] != escape) ;
+                    result.Add(input.Substring(++start, end - start));
+                    start = ++end;
+                }
+                else if (c == delim)
+                {
+                    if (end == input.Length - 1 || input[end + 1] == delim)
+                    {
+                        result.Add(string.Empty);
+                    }
+                    start = ++end;
+                }
+                else
+                {
+                    while (++end < input.Length && input[end] != delim) ;
+                    result.Add(input.Substring(start, end - start));
+                    start = end;
                 }
             }
 
-            return result;
+            if (requiredCount > 0 && result.Count != requiredCount)
+            {
+                throw new InvalidOperationException("Input string cannot be split into the required number of parts.");
+            }
+
+            return result.ToArray();
         }
     }
 }
