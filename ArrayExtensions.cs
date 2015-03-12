@@ -20,10 +20,9 @@ namespace Extensions
             // set the initial array value
             Array.Copy(value, destinationArray, value.Length);
 
-            int arrayToFillHalfLength = destinationArray.Length / 2;
-            int copyLength;
+            int copyLength, nextCopyLength;
 
-            for(copyLength = value.Length; copyLength < arrayToFillHalfLength; copyLength <<= 1)
+            for (copyLength = value.Length; (nextCopyLength = copyLength << 1) < destinationArray.Length; copyLength = nextCopyLength)
             {
                 Array.Copy(destinationArray, 0, destinationArray, copyLength, copyLength);
             }
