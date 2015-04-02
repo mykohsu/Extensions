@@ -5,7 +5,7 @@ namespace UVAToDataCube
 {
     public static class StringExtensions
     {
-        public static string[] SplitWithQuotes(this string input, int requiredCount = 0, char quoteChar = '"', char delim = ',', char escape = '\\', bool raiseException = false)
+        private static string[] SplitWithQuotes(this string input, int requiredCount = 0, bool raiseException = false, char quoteChar = '"', char escape = '\\', char delim = ',')
         {
             List<string> result = new List<string>(requiredCount);
 
@@ -49,6 +49,7 @@ namespace UVAToDataCube
 
             return result.ToArray();
         }
+        
         
         public static string[] SplitWithQuotes(this string input, int requiredCount = 0, bool raiseException = false, char quoteChar = '"', char escape = '\\', char delim = ',', params char[] additionalDelims)
         {
